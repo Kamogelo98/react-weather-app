@@ -2,6 +2,7 @@ import React ,{useState} from "react";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
 import "./Weather.css";
+import WeatherForecast from "./WeatherForecast";
 
 
 
@@ -13,12 +14,12 @@ export default function Weather(props){
     function handleResponse(response){
         setWeatherData({
             ready: true,
+            coordinates:response.data.coord,
             temperature: response.data.main.temp,
             humidity: response.data.main.humidity,
             date:new Date(response.data.dt*1000),
             description: response.data.weather[0].description,
-            // icon: response.data.weather[0].icon,
-            icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+            icon: response.data.weather[0].icon,
             wind: response.data.wind.speed,
             city: response.data.name
         });
@@ -56,7 +57,8 @@ function handleCityChange(event){
         </div>
     </form>
 
-    <WeatherInfo data={weatherData} />
+    <WeatherInfo code={weatherData} />
+    <WeatherForecast coordinates={weatherData.coordinates}/>
     </div> 
 
 );
